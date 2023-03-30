@@ -3,6 +3,7 @@ class ExpenseService {
         this.expenses = (JSON.parse(localStorage.getItem("expenses")) ||[]).map(
             expense => new Expense(expense)
         );
+        console.log('ExpenseService controler');
     }
 
     bindExpenseListChanged(callback){
@@ -20,7 +21,7 @@ class ExpenseService {
         this._commit(this.expenses);
     }
 
-    editTodo(id, updatedText, updatetAmount){
+    editExpense(id, updatedText, updatetAmount){
         this.expenses = this.expenses.map(expense => expense.id === id ?
             new Expense({...expense, text: updatedText, amount: updatetAmount}) : expense);
     
