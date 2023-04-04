@@ -34,6 +34,7 @@ class ExpenseService {
     }
 
     deleteExpense(_id){
+        console.log(`service: deleteExpense ${_id}`);
         this.expenses = this.expenses.filter(({id}) => id !== _id);
 
         this._commit(this.expenses);

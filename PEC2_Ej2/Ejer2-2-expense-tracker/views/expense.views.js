@@ -29,7 +29,7 @@ class ExpenseView {
         this.inc_total_exp_value = this.createElement("p", "money");
         this.inc_total_exp_value.classList.add("minus");
         this.inc_total_exp_value.textContent = "-$0.00";
-        this.inc_total_exp_value.id = "money-plus";
+        this.inc_total_exp_value.id = "money-minus";
 
         this.inc_total_div_income.append(this.inc_total_income_title, this.inc_total_income_value);
 
@@ -138,7 +138,32 @@ class ExpenseView {
                 this.addExpenseToList(expense);
 
             })
+            this.updateValues(expenses);
         }
+        
+
+    }
+
+    updateValues(expenses){
+
+        
+        const amounts = expenses.map(exp => Number(exp.amount)); 
+
+        const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
+
+        const income = amounts
+            .filter(item => item > 0)
+            .reduce((acc, item) => (acc += item), 0)
+            .toFixed(2);
+
+        const expense = (
+            amounts.filter(item => item < 0).reduce((acc, item) => (acc += item), 0) *
+            -1
+        ).toFixed(2);
+
+        this.total_balance.textContent = `$${total}`;
+        this.inc_total_income_value.textContent = `$${income}`;
+        this.inc_total_exp_value.textContent = `$${expense}`;
 
     }
 
@@ -152,9 +177,7 @@ class ExpenseView {
         item.innerHTML = `
         ${expense.text} <span>${sign}${Math.abs(
             expense.amount
-          )}</span> <button class="delete-btn" onclick="removeTransaction(${
-            expense.id
-          })">x</button>
+          )}</span> <button class="delete-btn">x</button>
           `;
         
           this.historyList.appendChild(item);
@@ -183,9 +206,10 @@ class ExpenseView {
 
     bindDeleteExpense(handler){
         this.historyList.addEventListener("click", event =>{
-            if(event.target.className === 'delete'){
-                const id = event.target.parentElement.id;
-
+            if(event.target.className === 'delete-btn'){
+                const id = event.target.id;
+                
+                console.log(`bindDeleteExpense click id: ${JSON.stringify(handler)}`);
                 handler(id);
             }
         });
