@@ -3,7 +3,8 @@ class ExpenseService {
         this.expenses = (JSON.parse(localStorage.getItem("expenses")) ||[]).map(
             expense => new Expense(expense)
         );
-        console.log('ExpenseService controler');
+        console.log(`ExpenseService controler ${this.expenses.length}`);
+        
     }
 
     bindExpenseListChanged(callback){
@@ -12,13 +13,16 @@ class ExpenseService {
 
     _commit(expenses){
         this.onEditListChanged(expenses);
-        localStorage.setItem("expenses", JSON.stringify(ExpenseService));
+        localStorage.setItem("expenses", JSON.stringify(expenses));
     }
 
     addExpense(text, amount) {
+        console.log(`text: ${text}, ${amount} €`);
         this.expenses.push(new Expense({text, amount}));
 
         this._commit(this.expenses);
+
+        console.log(`after commit expense: ${this.expenses}`);
     }
 
     editExpense(id, updatedText, updatetAmount){

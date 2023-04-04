@@ -97,11 +97,7 @@ class ExpenseView {
 
         this.app.append(this.container);
     }
-
-    displayExpenses(expenses){
-
-    }
-
+    
     getElement(selector) {
         const element = document.querySelector(selector);
     
@@ -116,9 +112,13 @@ class ExpenseView {
         return element;
     }
 
-    addClassName(className){
-        console.log(this);
-        this.classList.add(className);
+    get _expenseText(){
+        return this.inputTextTransaction.value;
+    }
+    
+
+    get _expenseAmount(){
+        return this.inputAmountTransaction.value; 
     }
 
     _resetValues(){
@@ -126,7 +126,86 @@ class ExpenseView {
         this.inputAmountTransaction.value = "";
     }
 
+    displayExpenses(expenses){
     
+        while (this.historyList.firstChild) {
+            this.historyList.removeChild(this.historyList.firstChild);
+        }
+
+        if(expenses.length !== 0){
+            expenses.forEach(expense => {
+                console.log(`displayExpenses: ${JSON.stringify(expenses)}`);
+                this.addExpenseToList(expense);
+
+            })
+        }
+
+    }
+
+    addExpenseToList(expense){
+
+        const sign = expense.amount < 0 ? '-' : '+';
+
+        const item = this.createElement("li");
+        item.classList.add(expense.amount < 0 ? 'minus' : 'plus');
+
+        item.innerHTML = `
+        ${expense.text} <span>${sign}${Math.abs(
+            expense.amount
+          )}</span> <button class="delete-btn" onclick="removeTransaction(${
+            expense.id
+          })">x</button>
+          `;
+        
+          this.historyList.appendChild(item);
+
+    }
+
+    _initLocalListeners(){
+        this.historyList.addEventListener("input", event =>{
+            if(event.target.className === "editable"){
+                this._temporaryExpenseText = event.target.innerText;
+            }
+        });
+    }
+
+    bindAddExpense(handler){
+        this.formNewTransaction.addEventListener("submit", event =>{
+            event.preventDefault();
+
+            if(this._expenseText && this._expenseAmount){
+                handler(this._expenseText, this._expenseAmount);
+                this._resetValues();
+            }
+
+        });
+    }
+
+    bindDeleteExpense(handler){
+        this.historyList.addEventListener("click", event =>{
+            if(event.target.className === 'delete'){
+                const id = event.target.parentElement.id;
+
+                handler(id);
+            }
+        });
+    }
+
+    bindEditExpense(handler){
+        this.historyList.addEventListener("focusout", event =>{
+            if(this._temporaryExpenseText){
+                const id = event.target.parentElement.id;
+
+                handler(id, this._temporaryExpenseText);
+                this._temporaryExpenseText = "";
+
+            }
+        });
+    }
+
+   
+    
+
     
 
       
