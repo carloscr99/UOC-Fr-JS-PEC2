@@ -138,7 +138,6 @@ class ExpenseView {
                 this.addExpenseToList(expense);
 
             })
-            this.updateValues(expenses);
         }
         
 
@@ -173,14 +172,19 @@ class ExpenseView {
 
         const item = this.createElement("li");
         item.classList.add(expense.amount < 0 ? 'minus' : 'plus');
-
         item.innerHTML = `
         ${expense.text} <span>${sign}${Math.abs(
             expense.amount
           )}</span> <button class="delete-btn">x</button>
           `;
+        item.id = expense.id;
+
+        const deleteBtn = this.createElement("button", "delete-btn");
+        deleteBtn.textContent = "x";
+
+        item.append(deleteBtn);
         
-          this.historyList.appendChild(item);
+        this.historyList.appendChild(item);
 
     }
 
@@ -207,9 +211,8 @@ class ExpenseView {
     bindDeleteExpense(handler){
         this.historyList.addEventListener("click", event =>{
             if(event.target.className === 'delete-btn'){
-                const id = event.target.id;
+                const id = event.target.parentElement.id;
                 
-                console.log(`bindDeleteExpense click id: ${JSON.stringify(handler)}`);
                 handler(id);
             }
         });

@@ -17,6 +17,7 @@ class ExpenseController {
     onExpenseListChanged = expenses =>{
         console.log(`onExpenseListChanged ${JSON.stringify(expenses)}`);
         this.view.displayExpenses(expenses);
+        this.view.updateValues(expenses);
     };
 
     handleAddExpense = (expense, amount) => {
