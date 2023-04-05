@@ -149,3 +149,22 @@ input[type='number'] {
 .list li:hover .delete-btn {
   opacity: 1;
 }
+.edit-btn {
+  cursor: pointer;
+  background-color: #30a4e7;
+  border: 0;
+  color: #fff;
+  font-size: 20px;
+  line-height: 20px;
+  padding: 2px 5px;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(780%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.list li:hover .edit-btn {
+  opacity: 1;
+}

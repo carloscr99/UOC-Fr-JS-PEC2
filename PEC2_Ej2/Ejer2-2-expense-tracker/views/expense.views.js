@@ -1,6 +1,6 @@
 class ExpenseView {
     constructor(){
-        console.log(`ExpenseView Constructor ${this}` );
+
         this.app = this.getElement("#root");
         this.title = this.createElement("h2");
         this.title.textContent = "Expense Tracker";
@@ -134,7 +134,7 @@ class ExpenseView {
 
         if(expenses.length !== 0){
             expenses.forEach(expense => {
-                console.log(`displayExpenses: ${JSON.stringify(expenses)}`);
+
                 this.addExpenseToList(expense);
 
             })
@@ -172,17 +172,23 @@ class ExpenseView {
 
         const item = this.createElement("li");
         item.classList.add(expense.amount < 0 ? 'minus' : 'plus');
-        item.innerHTML = `
-        ${expense.text} <span>${sign}${Math.abs(
-            expense.amount
-          )}</span> <button class="delete-btn">x</button>
-          `;
+        item.textContent = `${expense.text}`;
+
+        const span = this.createElement("span");
+   
+        span.textContent = `${sign}${Math.abs(expense.amount)}`;
+        item.append(span);
         item.id = expense.id;
 
         const deleteBtn = this.createElement("button", "delete-btn");
         deleteBtn.textContent = "x";
 
         item.append(deleteBtn);
+
+        const editBtn = this.createElement("button", "edit-btn");
+        editBtn.textContent = "Edit";
+
+        item.append(editBtn);
         
         this.historyList.appendChild(item);
 
@@ -219,21 +225,17 @@ class ExpenseView {
     }
 
     bindEditExpense(handler){
-        this.historyList.addEventListener("focusout", event =>{
-            if(this._temporaryExpenseText){
-                const id = event.target.parentElement.id;
-
-                handler(id, this._temporaryExpenseText);
-                this._temporaryExpenseText = "";
-
+        this.historyList.addEventListener("click", event =>{
+            if(event.target.className === 'edit-btn'){
+                if(this._expenseText && this._expenseAmount){
+                    const id = event.target.parentElement.id;
+                   
+                    handler(id, this._expenseText, this._expenseAmount);
+                    this._resetValues();
+                }
+             
             }
         });
     }
-
-   
-    
-
-    
-
       
 }
