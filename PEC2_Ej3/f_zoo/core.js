@@ -353,11 +353,77 @@ function employeeByName(employeeName) {
 }
 
 function managersForEmployee(idOrName) {
-  // your code here
+
+  const employee = employees.find((employee) => employee.id === idOrName || employee.firstName === idOrName || employee.lastName === idOrName);
+
+
+  const managerIds = employee.managers;
+
+
+  const managerNames = employees
+    .filter((employee) => managerIds.includes(employee.id))
+    .map((employee) => `${employee.firstName} ${employee.lastName}`);
+
+
+  return {
+    id: employee.id,
+    firstName: employee.firstName,
+    lastName: employee.lastName,
+    managers: managerNames,
+    responsibleFor: employee.responsibleFor
+  };
+
 }
 
 function employeeCoverage(idOrName) {
-  // your code here
+
+  let infoEmployers = {};
+
+  let employee = {};
+
+  if (idOrName === undefined) {
+    employee = employees;
+
+    for (let emp of employee) {
+      const animalsIDs = emp.responsibleFor;
+
+
+      const animalsName = animals
+        .filter((animal) => animalsIDs.includes(animal.id))
+        .map((anim) => `${anim.name}`);
+
+      let nombre = emp.firstName + ' ' + emp.lastName;
+
+      infoEmployers[nombre] = animalsName;
+
+
+    }
+
+    return  dict(sorted(infoEmployers.items(), item=> item: len(item[1]), reverse=True));
+
+
+  } else {
+    employee = employees.find((employee) => employee.id === idOrName || employee.firstName === idOrName || employee.lastName === idOrName);
+
+    const animalsIDs = employee.responsibleFor;
+
+
+    const animalsName = animals
+      .filter((animal) => animalsIDs.includes(animal.id))
+      .map((anim) => `${anim.name}`);
+
+
+
+    let nombre = employee.firstName + ' ' + employee.lastName;
+
+    return {
+
+      [nombre]: animalsName,
+    };
+
+   
+
+  }
 }
 
 module.exports = {
