@@ -182,7 +182,7 @@ function animalMap(options) {
 
     return animalMap;
 
-  } else if (options.includeNames && options.sex !== undefined) {
+  } else if (options !== undefined) {
 
     let animalMap = {};
 
@@ -202,7 +202,7 @@ function animalMap(options) {
           if (animals[i].residents[x].sex === options.sex) {
 
             animal[animals[i].name].push(animals[i].residents[x].name);
-
+            
           }
         }
 
@@ -228,11 +228,11 @@ function animalMap(options) {
 
     }
 
+    console.log(JSON.stringify(animalMap));
+
     return animalMap;
   }
-  else if (options.sex !== undefined) {
 
-  }
 }
 
 function animalPopularity(rating) {
@@ -399,7 +399,7 @@ function employeeCoverage(idOrName) {
 
     }
 
-    return  dict(sorted(infoEmployers.items(), item=> item: len(item[1]), reverse=True));
+    return infoEmployers;
 
 
   } else {
@@ -421,7 +421,7 @@ function employeeCoverage(idOrName) {
       [nombre]: animalsName,
     };
 
-   
+
 
   }
 }
